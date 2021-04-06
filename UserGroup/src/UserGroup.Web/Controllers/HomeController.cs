@@ -4,12 +4,7 @@ namespace UserGroup.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult Page()
+        public IActionResult Index()
         {
             return View();
         }
