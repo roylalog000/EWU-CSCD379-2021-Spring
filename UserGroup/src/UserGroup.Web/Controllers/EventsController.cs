@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using UserGroup.Web.Data;
@@ -5,13 +6,13 @@ using UserGroup.Web.ViewModels;
 
 namespace UserGroup.Web.Controllers
 {
-    public class SpeakersController : Controller
+    public class EventsController : Controller
     {
         
 
         public IActionResult Index()
         {
-            return View(MockData.Speakers);
+            return View(MockData.Events);
         }
 
         public IActionResult Create()
@@ -20,11 +21,11 @@ namespace UserGroup.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(SpeakerViewModel viewModel)
+        public IActionResult Create(EventViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                MockData.Speakers.Add(viewModel);
+                MockData.Events.Add(viewModel);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -33,15 +34,15 @@ namespace UserGroup.Web.Controllers
 
         public IActionResult Edit(int id)
         {
-            return View(MockData.Speakers[id]);
+            return View(MockData.Events[id]);
         }
 
         [HttpPost]
-        public IActionResult Edit(SpeakerViewModel viewModel)
+        public IActionResult Edit(EventViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                MockData.Speakers[viewModel.Id] = viewModel;
+                MockData.Events[viewModel.Id] = viewModel;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -51,7 +52,7 @@ namespace UserGroup.Web.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            MockData.Speakers.RemoveAt(id);
+            MockData.Events.RemoveAt(id);
             return RedirectToAction(nameof(Index));
         }
     }

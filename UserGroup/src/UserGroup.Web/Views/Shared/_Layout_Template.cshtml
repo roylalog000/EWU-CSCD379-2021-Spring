@@ -10,10 +10,11 @@
     <!-- End Stylesheets -->
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Speakers" asp-action="Index">Speakers</a></li>
+    <nav class="bg-green-500" >
+        <ul class="flex text-white">
+            <li><a class="inline-block p-6 leading-10 text-xl" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a class="inline-block p-6 leading-10" asp-controller="Speakers" asp-action="Index">Speakers</a></li>
+            <li><a class="inline-block p-6 leading-10" asp-controller="Events" asp-action="Index">Events</a></li>
         </ul>
     </nav>
     @RenderBody()

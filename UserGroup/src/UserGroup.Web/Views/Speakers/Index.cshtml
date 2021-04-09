@@ -5,6 +5,7 @@
 @foreach(var speaker in Model) {
     <section>
         @speaker.FirstName @speaker.LastName - @speaker.EmailAddress <a asp-controller="Speakers" asp-action="Edit" asp-route-id=@counter>Edit</a>
+        <form asp-controller="Speakers" asp-action="Delete" asp-route-id=@counter method="post"><button>X</button></form>
         @{counter++;}
     </section>
 }
