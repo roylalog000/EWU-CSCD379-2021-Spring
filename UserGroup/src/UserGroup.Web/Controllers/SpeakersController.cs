@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using UserGroup.Web.Data;
 using UserGroup.Web.ViewModels;
@@ -24,6 +25,7 @@ namespace UserGroup.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                viewModel.Id = MockData.Speakers.Max(s => s.Id) + 1;
                 MockData.Speakers.Add(viewModel);
                 return RedirectToAction(nameof(Index));
             }

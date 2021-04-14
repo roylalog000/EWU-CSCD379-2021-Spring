@@ -1,5 +1,6 @@
 @model EventViewModel
 
+<section class="mb-6">
 <div asp-validation-summary='All'></div>
 <div class="flex mb-6">
     <div class="flex w-1/2">
@@ -7,7 +8,7 @@
             <label class="text-gray-500 font-bold text-right" asp-for="Title"></label>
         </div>
         <div class="w-2/3">
-            <input class="border border-indigo-300 rounded-md w-full" type="text" asp-for="Title" />
+            <input class="focus:outline-none focus:ring-transparent focus:border-indigo-600" type="text" asp-for="Title" />
         </div>
     </div>
     <div class="flex w-1/2">
@@ -15,17 +16,17 @@
             <label class="text-gray-500 font-bold text-right" asp-for="Description"></label>
         </div>
         <div class="w-2/3">
-            <input class="border border-indigo-300 rounded-md w-full" type="text" asp-for="Description" />
+            <input type="text" asp-for="Description" />
         </div>
     </div>
 </div>
 <div>
-    <label asp-for="Date"></label>: <input type="text" asp-for="Date" />
+    <label asp-for="Date" class="text-gray-500 font-bold mb-1 pr-4"></label>: <input type="text" class="border-indigo-300 border" asp-for="Date" />
 </div>
 <div class="grid grid-cols-2">
     <div>
         <label asp-for="Location" class="text-gray-500 font-bold text-right"></label>
-        <input type="text" class="w-full" asp-for="Location" />
+        <input type="text" class="w-full border-b-2" asp-for="Location" />
     </div>
     <div>
         <label asp-for="SpeakerId"></label>
@@ -34,3 +35,4 @@
         </select>
     </div>
 </div>
+</section>
