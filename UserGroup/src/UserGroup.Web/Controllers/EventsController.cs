@@ -8,8 +8,6 @@ namespace UserGroup.Web.Controllers
 {
     public class EventsController : Controller
     {
-        
-
         public IActionResult Index()
         {
             return View(MockData.Events);

@@ -6,13 +6,15 @@
     @foreach(var speaker in Model) {
         <section class="border-gray-500 border-2 p-6 m-5 rounded-lg">
             @speaker.FirstName @speaker.LastName <a asp-controller="Speakers" asp-action="Edit" asp-route-id=@counter>Edit</a>
-            <form asp-controller="Speakers" asp-action="Delete" asp-route-id=@counter method="post"><button>X</button></form>
+            <form asp-controller="Speakers" asp-action="Delete" asp-route-id=@counter method="post">
+                <button onclick="return confirm('You are about to delete @speaker.FirstName @speaker.LastName. Are you sure you want to do this?');">X</button>
+            </form>
             @{counter++;}
         </section>
     }
 </section>
 
-<section class="flex flex-wrap">
+@* <section class="flex flex-wrap">
     @foreach(var speaker in Model) {
         <div class="w-1/3">
             <section class="border-gray-500 border-2 p-6 m-5 rounded-lg">
@@ -22,6 +24,6 @@
             </section>
         </div>
     }
-</section>
+</section> *@
 
 <a asp-controller="Speakers" asp-action="Create">Create</a>
