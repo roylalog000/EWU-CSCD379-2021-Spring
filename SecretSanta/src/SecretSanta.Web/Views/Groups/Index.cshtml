@@ -4,8 +4,22 @@
 
 @foreach(var groupViewModel in Model) {
     <section>
-        @groupViewModel.Name <a asp-action="Edit" asp-route-id=@counter>Edit</a><form asp-action="Delete" asp-route-id=@counter method="post"><button>X</button></form>
+        @groupViewModel.Name <a asp-action="Edit" asp-route-id=@counter>Edit</a><form asp-action="Delete" asp-route-id=@counter method="post"><button onclick="GetConfirmation()">X</button></form>
         @{counter++;}
     </section>
 }
+<script type="text/javascript">
+  function GetConfirmation()
+  {
+      var reply = confirm("Are you sure you want to delete this?");
+      if(reply)
+      {
+         return true;
+      }
+      else
+      {
+         return false;
+      }
+  }
+</script>
 <a asp-action="Create">Create</a>

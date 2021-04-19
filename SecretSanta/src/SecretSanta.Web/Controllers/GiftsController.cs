@@ -23,6 +23,8 @@ namespace SecretSanta.Web.Controllers
             {
                 MockData.Gifts.Add(viewModel);
                 return RedirectToAction(nameof(Index));
+            }else{
+                return View(viewModel);
             }
 
             return View(viewModel);
