@@ -6,8 +6,6 @@ using UserGroup.Data;
 
 namespace UserGroup.Api.Controllers
 {
-    //POCO
-    //Plain Old C# Object
     [Route("api/[controller]")]
     [ApiController]
     public class EventsController : ControllerBase
@@ -28,37 +26,59 @@ namespace UserGroup.Api.Controllers
 
         // /api/events/<index>
         [HttpGet("{id}")]
-        public Event? Get(int id)
+        public ActionResult<Event?> Get(int id)
         {
-            return EventManager.GetItem(id);
-        }
-
-        //DELETE /api/events/<index>
-        [HttpDelete("{index}")]
-        public ActionResult Delete(int index)
-        {
-            if (index < 0)
+            if (id < 0)
             {
                 return NotFound();
             }
-            DeleteMe.Events.RemoveAt(index);
-            return Ok();
+            Event? returnedEvent = EventManager.GetItem(id);
+            return returnedEvent;
+        }
+
+        //DELETE /api/events/<index>
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            if (id < 0)
+            {
+                return NotFound();
+            }
+            if (EventManager.Remove(id))
+            {
+                return Ok();
+            }
+            return NotFound();
         }
 
         // POST /api/events
         [HttpPost]
-        public void Post([FromBody] Event myEvent)
+        public ActionResult<Event?> Post([FromBody] Event? myEvent)
         {
-            Console.WriteLine(myEvent.Name);
-            Console.WriteLine(myEvent.Id);
-            //DeleteMe.Events.Add(eventName);
+            if (myEvent is null)
+            {
+                return BadRequest();
+            }
+            return EventManager.Create(myEvent);
         }
 
-        // PUT /api/events/<index>
-        [HttpPut("{index}")]
-        public void Put(int index, [FromBody]string eventName)
+        // PUT /api/events/<id>
+        [HttpPut("{id}")]
+        public ActionResult Put(int id, [FromBody]Event? updatedEvent)
         {
-            //DeleteMe.Events[index] = eventName; 
+            if (updatedEvent is null)
+            {
+                return BadRequest();
+            }
+            Event? foundEvent = EventManager.GetItem(id);
+            if (foundEvent is not null)
+            {
+                foundEvent.Name = updatedEvent.Name;
+
+                EventManager.Save(foundEvent);
+                return Ok();
+            }
+            return NotFound();
         }
     }
 }

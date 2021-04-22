@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UserGroup.Data;
+using System.Linq;
 
 namespace UserGroup.Business
 {
@@ -13,7 +15,11 @@ namespace UserGroup.Business
 
         public Event? GetItem(int id)
         {
-            throw new System.NotImplementedException();
+            if (id < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id));
+            }
+            return DeleteMe.Events.FirstOrDefault(x => x.Id == id);
         }
 
         public ICollection<Event> List()
@@ -23,12 +29,19 @@ namespace UserGroup.Business
 
         public bool Remove(int id)
         {
-            throw new System.NotImplementedException();
+            Event? foundEvent = DeleteMe.Events.FirstOrDefault(x => x.Id == id);
+            if (foundEvent is not null)
+            {
+                DeleteMe.Events.Remove(foundEvent);
+                return true;
+            }
+            return false;
         }
 
         public void Save(Event item)
         {
-            throw new System.NotImplementedException();
+            Remove(item.Id);
+            Create(item);
         }
     }
 }
