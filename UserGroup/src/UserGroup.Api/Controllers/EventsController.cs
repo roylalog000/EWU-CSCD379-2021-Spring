@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using UserGroup.Api.Dto;
 using UserGroup.Business;
 using UserGroup.Data;
 
@@ -64,7 +65,7 @@ namespace UserGroup.Api.Controllers
 
         // PUT /api/events/<id>
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody]Event? updatedEvent)
+        public ActionResult Put(int id, [FromBody]UpdateEvent? updatedEvent)
         {
             if (updatedEvent is null)
             {
@@ -73,7 +74,10 @@ namespace UserGroup.Api.Controllers
             Event? foundEvent = EventManager.GetItem(id);
             if (foundEvent is not null)
             {
-                foundEvent.Name = updatedEvent.Name;
+                if (!string.IsNullOrWhiteSpace(updatedEvent.Name))
+                {
+                    foundEvent.Name = updatedEvent.Name;
+                }
 
                 EventManager.Save(foundEvent);
                 return Ok();
