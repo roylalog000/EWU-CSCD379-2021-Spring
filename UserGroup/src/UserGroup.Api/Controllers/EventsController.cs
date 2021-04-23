@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using UserGroup.Api.Dto;
+using UserGroup.Business;
+using UserGroup.Data;
 
 namespace UserGroup.Api.Controllers
 {
@@ -7,32 +11,78 @@ namespace UserGroup.Api.Controllers
     [ApiController]
     public class EventsController : ControllerBase
     {
+        private IEventManager EventManager { get; }
+
+        public EventsController(IEventManager eventManager)
+        {
+            EventManager = eventManager ?? throw new ArgumentNullException(nameof(eventManager));
+        }
+
         // /api/events
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Event> Get()
         {
-            return DeleteMe.Events;
+            return EventManager.List();
         }
 
         // /api/events/<index>
-        [HttpGet("{index}")]
-        public string Get(int index)
+        [HttpGet("{id}")]
+        public ActionResult<Event?> Get(int id)
         {
-            return DeleteMe.Events[index];
+            if (id < 0)
+            {
+                return NotFound();
+            }
+            Event? returnedEvent = EventManager.GetItem(id);
+            return returnedEvent;
         }
 
         //DELETE /api/events/<index>
-        [HttpDelete("{index}")]
-        public void Delete(int index)
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
         {
-            DeleteMe.Events.RemoveAt(index);
+            if (id < 0)
+            {
+                return NotFound();
+            }
+            if (EventManager.Remove(id))
+            {
+                return Ok();
+            }
+            return NotFound();
         }
 
         // POST /api/events
         [HttpPost]
-        public void Post([FromBody] string eventName)
+        public ActionResult<Event?> Post([FromBody] Event? myEvent)
         {
-            DeleteMe.Events.Add(eventName);
+            if (myEvent is null)
+            {
+                return BadRequest();
+            }
+            return EventManager.Create(myEvent);
+        }
+
+        // PUT /api/events/<id>
+        [HttpPut("{id}")]
+        public ActionResult Put(int id, [FromBody]UpdateEvent? updatedEvent)
+        {
+            if (updatedEvent is null)
+            {
+                return BadRequest();
+            }
+            Event? foundEvent = EventManager.GetItem(id);
+            if (foundEvent is not null)
+            {
+                if (!string.IsNullOrWhiteSpace(updatedEvent.Name))
+                {
+                    foundEvent.Name = updatedEvent.Name;
+                }
+
+                EventManager.Save(foundEvent);
+                return Ok();
+            }
+            return NotFound();
         }
     }
 }
