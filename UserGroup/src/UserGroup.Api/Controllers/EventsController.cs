@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserGroup.Api.Dto;
 using UserGroup.Business;
@@ -39,6 +40,8 @@ namespace UserGroup.Api.Controllers
 
         //DELETE /api/events/<index>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult Delete(int id)
         {
             if (id < 0)
@@ -54,6 +57,8 @@ namespace UserGroup.Api.Controllers
 
         // POST /api/events
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Event), StatusCodes.Status200OK)]
         public ActionResult<Event?> Post([FromBody] Event? myEvent)
         {
             if (myEvent is null)
