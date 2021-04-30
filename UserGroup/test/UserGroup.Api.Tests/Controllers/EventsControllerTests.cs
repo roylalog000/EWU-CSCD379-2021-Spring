@@ -6,6 +6,11 @@ using UserGroup.Business;
 using UserGroup.Data;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Net.Http;
+using UserGroup.Api.Dto;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using UserGroup.Api.Tests.Business;
 
 namespace UserGroup.Api.Tests.Controllers
 {
@@ -81,35 +86,30 @@ namespace UserGroup.Api.Tests.Controllers
             Assert.IsTrue(result.Result is NotFoundResult);
         }
 
-        private class TestableEventManager : IEventManager
+        [TestMethod]
+        public async Task Put_WithValidData_UpdatesEvent()
         {
-            public Event Create(Event item)
+            //Arrange
+            WebApplicationFactory factory = new();
+            TestableEventManager manager = factory.Manager;
+            Event foundEvent = new Event
             {
-                throw new System.NotImplementedException();
-            }
+                Id = 42
+            };
+            manager.GetItemEvent = foundEvent;
 
-            public Event? GetItemEvent { get; set; }
-            public int GetItemId { get; set; }
-            public Event? GetItem(int id)
+            HttpClient client = factory.CreateClient();
+            UpdateEvent updateEvent = new()
             {
-                GetItemId = id;
-                return GetItemEvent;
-            }
+                Name = "Casey's Birthday"
+            };
 
-            public ICollection<Event> List()
-            {
-                throw new System.NotImplementedException();
-            }
+            //Act
+            HttpResponseMessage response = await client.PutAsJsonAsync("/api/events/42", updateEvent);
 
-            public bool Remove(int id)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            public void Save(Event item)
-            {
-                throw new System.NotImplementedException();
-            }
+            //Assert
+            response.EnsureSuccessStatusCode();
+            Assert.AreEqual("Casey's Birthday", manager.SavedEvent?.Name);
         }
     }
 }
