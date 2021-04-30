@@ -38,11 +38,13 @@ namespace UserGroup.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(EventViewModel viewModel)
+        public async Task<IActionResult> Create(EventViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                MockData.Events.Add(viewModel);
+                await Client.PostAsync(new Event {
+                    Name = viewModel.Title
+                });
                 return RedirectToAction(nameof(Index));
             }
 
@@ -59,7 +61,7 @@ namespace UserGroup.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                MockData.Events[viewModel.Id] = viewModel;
+                MockData.Events[viewModel.Id ?? 0] = viewModel;
                 return RedirectToAction(nameof(Index));
             }
 
