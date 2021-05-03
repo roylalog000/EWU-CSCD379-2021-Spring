@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SecretSanta.Business;
 using SecretSanta.Data;
+using SecretSanta.Api.Dto;
 
 namespace SecretSanta.Api.Controllers
 {
@@ -27,14 +27,24 @@ namespace SecretSanta.Api.Controllers
         [HttpGet("{id}")]
         public ActionResult<User?> Get(int id)
         {
+            if (id < 0)
+            {
+                return NotFound();
+            }
             User? user = Repository.GetItem(id);
             if (user is null) return NotFound();
             return user;
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult Delete(int id)
         {
+            if (id < 0)
+            {
+                return NotFound();
+            }
             if (Repository.Remove(id))
             {
                 return Ok();
@@ -43,33 +53,41 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<User?> Post([FromBody] User? user)
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
+        public ActionResult<User?> Post([FromBody] User? myUser)
         {
-            if (user is null)
+            if (myUser is null)
             {
                 return BadRequest();
             }
-            return Repository.Create(user);
+            return Repository.Create(myUser);
         }
 
+
         [HttpPut("{id}")]
-        public ActionResult Put(int id, [FromBody] User? user)
+        public ActionResult Put(int id, [FromBody]UpdatedUser? updatedEvent)
         {
-            if (user is null)
+            if (updatedEvent is null)
             {
                 return BadRequest();
             }
-
-            User? foundUser = Repository.GetItem(id);
-            if (foundUser is not null)
+            User? foundEvent = Repository.GetItem(id);
+            if (foundEvent is not null)
             {
-                foundUser.FirstName = user.FirstName ?? "";
-                foundUser.LastName = user.LastName ?? "";
+                if (!string.IsNullOrWhiteSpace(updatedEvent.FirstName))
+                {
+                    foundEvent.FirstName = updatedEvent.FirstName;
+                }
 
-                Repository.Save(foundUser);
+                Repository.Save(foundEvent);
                 return Ok();
             }
             return NotFound();
         }
     }
 }
+    
+    
+

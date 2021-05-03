@@ -1,36 +1,62 @@
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+
 using SecretSanta.Web.Data;
 using SecretSanta.Web.ViewModels;
+using SecretSanta.Web.Api;
+using SecretSanta.Api.Dto;
 
 namespace SecretSanta.Web.Controllers
 {
     public class UsersController : Controller
     {
-        public IActionResult Index()
+        public IUsersClient Client { get; }
+
+        public UsersController(IUsersClient client)
         {
-            return View(MockData.Users);
+            Client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            ICollection<User> users = await Client.GetAllAsync();
+            List<UserViewModel> viewModelUsers = new();
+            foreach (User u in users)
+            {
+                viewModelUsers.Add(new UserViewModel
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+
+                });
+            }
+            return View(viewModelUsers);
         }
 
-        [HttpPost]
-        public IActionResult Create(UserViewModel viewModel)
+        public async Task<IActionResult> Create(UserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                MockData.Users.Add(viewModel);
+                await Client.PostAsync(new User
+                {
+                    FirstName = viewModel.FirstName
+                });
                 return RedirectToAction(nameof(Index));
             }
 
             return View(viewModel);
         }
 
+
+
+
         public IActionResult Edit(int id)
         {
-            return View(MockData.Users[id]);
+            return View(MockData.Users[id - 1]);
         }
 
         [HttpPost]
@@ -46,9 +72,9 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            MockData.Users.RemoveAt(id);
+            await Client.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

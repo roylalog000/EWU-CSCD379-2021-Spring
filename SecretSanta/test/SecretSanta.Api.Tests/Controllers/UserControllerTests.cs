@@ -15,6 +15,6 @@ namespace SecretSanta.Api.Tests.Controllers
     [TestClass]
     public class UserControllerTests
     {
-        
+
     }
 }
