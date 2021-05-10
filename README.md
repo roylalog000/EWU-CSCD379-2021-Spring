@@ -26,4 +26,4 @@ In this project, we are going to configure continuous integration and continuous
 - Configure code coverage and generate a report (see https://github.com/dotnet/docs/blob/main/docs/core/testing/unit-testing-code-coverage.md) ✔❌
 
 ##
-![](../../workflows/.NET/badge.svg)
+![](../../workflows/AssignmentBuild.yml/badge.svg)
