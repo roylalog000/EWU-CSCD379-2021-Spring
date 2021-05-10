@@ -30,4 +30,4 @@ In this project, we are going to configure continuous integration and continuous
 
 https://ewu-cscd379-2021-spring-roylalog000.azurewebsites.net
 
-![Azure App Service - EWU-CSCD379-2021-Spring-roylalog000(Production), Build and deploy DotnetCore app](../../workflows/assignment6_ewu-cscd379-2021-spring-roylalog000.yml)
+![](../../workflows/assignment6_ewu-cscd379-2021-spring-roylalog000.yml/badge.svg)
