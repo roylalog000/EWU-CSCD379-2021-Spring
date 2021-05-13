@@ -79,10 +79,14 @@ namespace UserGroup.Api.Controllers
             Event? foundEvent = EventManager.GetItem(id);
             if (foundEvent is not null)
             {
-                if (!string.IsNullOrWhiteSpace(updatedEvent.Name))
+                if (!string.IsNullOrWhiteSpace(updatedEvent.Title))
                 {
-                    foundEvent.Name = updatedEvent.Name;
+                    foundEvent.Title = updatedEvent.Title;
                 }
+                foundEvent.Date = updatedEvent.Date;
+                foundEvent.Description = updatedEvent.Description;
+                foundEvent.Location = updatedEvent.Location;
+                foundEvent.SpeakerId = updatedEvent.SpeakerId;
 
                 EventManager.Save(foundEvent);
                 return Ok();

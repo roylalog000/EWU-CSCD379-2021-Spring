@@ -9,6 +9,7 @@ namespace UserGroup.Business
     {
         public Event Create(Event item)
         {
+            item.Id = DeleteMe.Events.Max(s => s.Id) + 1;
             DeleteMe.Events.Add(item);
             return item;
         }

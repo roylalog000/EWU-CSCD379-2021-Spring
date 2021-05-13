@@ -23,8 +23,9 @@
             </ul>
         </nav>
     </header>
-    @RenderBody()
-
+    <section class="m-10">
+        @RenderBody()
+    </section>
     <!-- Scripts -->
     <% for (var index in htmlWebpackPlugin.files.js) { %>
     <script src="~<%= htmlWebpackPlugin.files.js[index] %>"></script>

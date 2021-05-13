@@ -53,8 +53,8 @@ namespace UserGroup.Web.Tests
             await page.ClickAsync("text=Speakers");
 
             // make sure we have 10 speakers here
-            var speakers = await page.QuerySelectorAllAsync("body > section > section");
-            Assert.AreEqual(10, speakers.Count());
+            var speakers = await page.QuerySelectorAllAsync("body > section > section > section");
+            Assert.AreEqual(5, speakers.Count());
 
             await page.ClickAsync("text=Create");
 
@@ -65,8 +65,8 @@ namespace UserGroup.Web.Tests
             await page.ClickAsync("text=Create");
 
             // make sure we have 10 + 1 speakers here
-            speakers = await page.QuerySelectorAllAsync("body > section > section");
-            Assert.AreEqual(11, speakers.Count());
+            speakers = await page.QuerySelectorAllAsync("body > section > section > section");
+            Assert.AreEqual(6, speakers.Count());
         }
 
         [TestMethod]
@@ -86,17 +86,20 @@ namespace UserGroup.Web.Tests
 
             await page.ClickAsync("text=Speakers");
 
+            await page.ScreenshotAsync("speakersStart.png");
             // make sure we have 10 + 1 speakers here
-            var speakers = await page.QuerySelectorAllAsync("body > section > section");
-            Assert.AreEqual(11, speakers.Count());
+            var speakers = await page.QuerySelectorAllAsync("body > section > section > section");
+            Assert.AreEqual(6, speakers.Count());
 
             page.Dialog += (_, args) => args.Dialog.AcceptAsync();
 
-            await page.ClickAsync("body > section > section:last-child > form > button");
+            await page.ClickAsync("body > section > section > section:last-child > a > section > form > button");
 
             // make sure we have 10 speakers here
-            speakers = await page.QuerySelectorAllAsync("body > section > section");
-            Assert.AreEqual(10, speakers.Count());
+            speakers = await page.QuerySelectorAllAsync("body > section > section > section");
+            Assert.AreEqual(5, speakers.Count());
+
+            await page.ScreenshotAsync("speakersFinal.png");
         }
 
         [TestMethod]
@@ -116,9 +119,9 @@ namespace UserGroup.Web.Tests
 
             await page.ClickAsync("text=Speakers");
 
-            var sectionText = await page.GetTextContentAsync("body > section > section:last-child");
+            var sectionText = await page.GetTextContentAsync("body > section > section > section:last-child > a > section > div");
 
-            Assert.IsTrue(sectionText.Contains("Princess Buttercup"));
+            Assert.AreEqual("Count Rugen", sectionText);
         }
 
         [TestMethod]

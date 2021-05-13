@@ -1,10 +1,14 @@
+using System;
+
 namespace UserGroup.Data
 {
     public class Event
     {
         public int Id { get; set; }
-        public string Name { get; set; } = "";
-        [System.Text.Json.Serialization.JsonPropertyName("speakers")]
-        public string[]? UserGroupSpeakers { get; set; } 
+        public string Title { get; set; } = "";
+        public string? Description { get; set; } = "";
+        public DateTime? Date { get; set; }
+        public string? Location { get; set; } = "";
+        public int? SpeakerId { get; set; }
     }
 }

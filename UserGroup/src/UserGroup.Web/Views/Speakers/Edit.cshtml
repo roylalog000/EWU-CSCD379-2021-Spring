@@ -2,17 +2,7 @@
 
 <form asp-controller="Speakers" asp-action="Edit" method="post">
     <input type="hidden" asp-for="Id" />
-    <div>
-        <label asp-for="FirstName"></label>: <input type="text" asp-for="FirstName" />
-        <span asp-validation-for="FirstName"></span>
-    </div>
-    <div>
-        <label asp-for="LastName"></label>: <input type="text" asp-for="LastName" />
-        <span asp-validation-for="LastName"></span>
-    </div>
-    <div>
-        <label asp-for="EmailAddress"></label>: <input type="text" asp-for="EmailAddress" />
-        <span asp-validation-for="EmailAddress"></span>
-    </div>
-    <button>Save</button>
+    @await Html.PartialAsync("_CreateOrEdit")
+    <button class="btn mr-6">Update</button>
+    <a class="btn bg-red-400 inline-block"asp-controller="Speakers" asp-action="Index">Cancel</a>
 </form>
