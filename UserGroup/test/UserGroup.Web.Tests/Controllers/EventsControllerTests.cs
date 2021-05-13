@@ -18,8 +18,8 @@ namespace UserGroup.Web.Tests
         public async Task Index_WithEvents_InvokesGetAllAsync()
         {
             //Arrange
-            Event event1 = new() { Id = 1, Name = "Event 1" };
-            Event event2 = new() { Id = 2, Name = "Event 2" };
+            Event event1 = new() { Id = 1, Title = "Event 1" };
+            Event event2 = new() { Id = 2, Title = "Event 2" };
             TestableEventsClient eventsClient = Factory.Client;
             eventsClient.GetAllEventsReturnValue = new List<Event>()
             {
@@ -57,7 +57,7 @@ namespace UserGroup.Web.Tests
             response.EnsureSuccessStatusCode();
             Assert.AreEqual(1, eventsClient.PostAsyncInvocationCount);
             Assert.AreEqual(1, eventsClient.PostAsyncInvokedParameters.Count);
-            Assert.AreEqual("Birthday", eventsClient.PostAsyncInvokedParameters[0].Name);
+            Assert.AreEqual("Birthday", eventsClient.PostAsyncInvokedParameters[0].Title);
         }
     }
 }
