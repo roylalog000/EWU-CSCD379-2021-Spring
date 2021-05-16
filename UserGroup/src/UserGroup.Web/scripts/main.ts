@@ -8,16 +8,12 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
+import {EventsClient, Event} from '../Api/UserGroup.Api.Client.g';
+
 library.add(fas, far, fab);
 dom.watch();
 
 declare var apiHost: string;
-
-interface Event {
-    id: number,
-    title: string,
-    date: Date
-}
 
 export function setupNav() {
     return {
@@ -48,8 +44,11 @@ export function setupEvents() {
         },
         async loadEvents() {
             try {
-                const response = await axios.get(`${apiHost}/api/events`);
-                this.events = response.data;
+                var client = new EventsClient(`${apiHost}`);
+                this.events = await client.getAll() || [];
+                // const response = await axios.get(`${apiHost}/api/events`);
+                // this.events = response.data;
+                var i = 0;
             } catch (error) {
                 console.log(error);
             }
@@ -62,8 +61,10 @@ export function createOrUpdateEvent() {
         event: {} as Event,
         async create() {
             try {
-                this.event.date = new Date(this.event.date);
-                await axios.post(`${apiHost}/api/events`, this.event);
+                const client = new EventsClient(apiHost);
+                this.event.date = new Date(this.event.date!);
+                await client.post(this.event);
+                //await axios.post(`${apiHost}/api/events`, this.event);
                 window.location.href="/events";
             } catch (error) {
                 console.log(error);
@@ -71,8 +72,10 @@ export function createOrUpdateEvent() {
         },
         async update() {
             try {
-                this.event.date = new Date(this.event.date);  //2021-05-13 5/13/2021
-                await axios.put(`${apiHost}/api/events/${this.event.id}`, this.event);
+                const client = new EventsClient(apiHost);
+                this.event.date = new Date(this.event.date!);  //2021-05-13 5/13/2021
+                await client.put(this.event.id, this.event);
+                //await axios.put(`${apiHost}/api/events/${this.event.id}`, this.event);
                 window.location.href="/events";
             } catch (error) {
                 console.log(error);
@@ -82,8 +85,10 @@ export function createOrUpdateEvent() {
             const pathnameSplit = window.location.pathname.split('/');
             const id = pathnameSplit[pathnameSplit.length - 1];
             try {
-                const response = await axios.get(`${apiHost}/api/events/${id}`);
-                this.event = response.data;
+                const client = new EventsClient(apiHost);
+                this.event = await client.get(+id);
+                // const response = await axios.get(`${apiHost}/api/events/${id}`);
+                // this.event = response.data;
             } catch (error) {
                 console.log(error);
             }

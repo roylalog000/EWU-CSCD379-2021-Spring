@@ -15,6 +15,7 @@ namespace UserGroup.Web.Tests
         private WebApplicationFactory Factory { get; } = new();
 
         [TestMethod]
+        [Ignore("Ignoring these now since we changed up the UI to use the API diectly instead of through the Contoller.")]
         public async Task Index_WithEvents_InvokesGetAllAsync()
         {
             //Arrange
@@ -38,6 +39,7 @@ namespace UserGroup.Web.Tests
         }
     
         [TestMethod]
+        [Ignore("Ignoring these now since we changed up the UI to use the API diectly instead of through the Contoller.")]
         public async Task Create_WithValidModel_InvokesPostAsync()
         {
             //Arrange
