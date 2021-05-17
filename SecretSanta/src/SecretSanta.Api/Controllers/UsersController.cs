@@ -62,7 +62,7 @@ namespace SecretSanta.Api.Controllers
             {
                 foundUser.FirstName = user.FirstName ?? "";
                 foundUser.LastName = user.LastName ?? "";
-
+                foundUser.Date = user.Date;
                 Repository.Save(foundUser);
                 return Ok();
             }

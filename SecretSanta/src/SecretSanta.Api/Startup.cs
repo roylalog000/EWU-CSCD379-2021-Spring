@@ -12,9 +12,18 @@ namespace SecretSanta.Api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
             services.AddControllers();
             services.AddSwaggerDocument();
+                     services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,10 +34,12 @@ namespace SecretSanta.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRouting();
+
             app.UseOpenApi();
             app.UseSwaggerUi3();
 
-            app.UseRouting();
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {

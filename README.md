@@ -10,6 +10,6 @@
   - All of these tests should be able to be executed without having to manually start the Web and Api projects ✔❌
 - Using AlpineJS, convert the CRUD pages for Users to be javascript based instead of MVC based
   - Index page should fetch the Users via javascript directly from the API ✔❌
-  - Create page should submit the Users information via javascript directly to the API. Upon successful save, the user should be redirected back to the Users index page ✔❌
-  - Edit page should submit the Users information via javascript directly to the API. Upon successful update, the user should be redirected back to the Users index page ✔❌
+  - Create page should submit the gifts information via javascript directly to the API. Upon successful save, the user should be redirected back to the Users index page ✔❌
+  - Edit page should submit the gifts information via javascript directly to the API. Upon successful update, the user should be redirected back to the Users index page ✔❌
   - Delete opration should submit the request directly to the API via javascript and then refresh the Index page via a javascript call directly to the API ✔❌
