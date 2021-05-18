@@ -86,12 +86,26 @@ namespace UserGroup.Api.Controllers
                 foundEvent.Date = updatedEvent.Date;
                 foundEvent.Description = updatedEvent.Description;
                 foundEvent.Location = updatedEvent.Location;
-                foundEvent.SpeakerId = updatedEvent.SpeakerId;
+                //foundEvent.SpeakerId = updatedEvent.SpeakerId;
 
                 EventManager.Save(foundEvent);
                 return Ok();
             }
             return NotFound();
+        }
+
+        [HttpPut("{id}/removeSpeaker")]
+        public ActionResult RemoveSpeaker(int id, [FromBody] int speakerId)
+        {
+            var result = EventManager.RemoveSpeaker(id, speakerId);
+            if (result.IsSuccess)
+            {
+                return Ok();
+            }
+            return NotFound(new
+            {
+                Title = result.ErrorMessage
+            });
         }
     }
 }

@@ -8,7 +8,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
-import {EventsClient, Event} from '../Api/UserGroup.Api.Client.g';
+import {EventsClient, Event, Speaker} from '../Api/UserGroup.Api.Client.g';
 
 library.add(fas, far, fab);
 dom.watch();
@@ -58,7 +58,7 @@ export function setupEvents() {
 
 export function createOrUpdateEvent() {
     return {
-        event: {} as Event,
+        event: { } as Event,
         async create() {
             try {
                 const client = new EventsClient(apiHost);
@@ -92,6 +92,15 @@ export function createOrUpdateEvent() {
             } catch (error) {
                 console.log(error);
             }
+        },
+        async removeSpeaker(event : Event, speaker : Speaker){
+            try {
+                const client = new EventsClient(apiHost);
+                await client.removeSpeaker(event.id, 42);
+            } catch(error) {
+                console.log(error);
+            }
+            await this.loadData();
         }
     }
 }
