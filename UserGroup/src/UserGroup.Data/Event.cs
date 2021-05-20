@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace UserGroup.Data
 {
@@ -9,6 +10,6 @@ namespace UserGroup.Data
         public string? Description { get; set; } = "";
         public DateTime? Date { get; set; }
         public string? Location { get; set; } = "";
-        public int? SpeakerId { get; set; }
+        public List<Speaker> Speakers { get; } = new();
     }
 }

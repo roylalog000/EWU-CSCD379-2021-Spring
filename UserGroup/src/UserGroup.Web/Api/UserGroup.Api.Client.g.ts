@@ -15,6 +15,7 @@ export interface IEventsClient {
     get(id: number): Promise<Event>;
     delete(id: number): Promise<void>;
     put(id: number, updatedEvent: UpdateEvent): Promise<FileResponse | null>;
+    removeSpeaker(id: number, speakerId: number): Promise<FileResponse | null>;
 }
 
 export class EventsClient implements IEventsClient {
@@ -287,6 +288,60 @@ export class EventsClient implements IEventsClient {
         }
         return Promise.resolve<FileResponse | null>(<any>null);
     }
+
+    removeSpeaker(id: number, speakerId: number , cancelToken?: CancelToken | undefined): Promise<FileResponse | null> {
+        let url_ = this.baseUrl + "/api/Events/{id}/removeSpeaker";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(speakerId);
+
+        let options_ = <AxiosRequestConfig>{
+            data: content_,
+            responseType: "blob",
+            method: "PUT",
+            url: url_,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processRemoveSpeaker(_response);
+        });
+    }
+
+    protected processRemoveSpeaker(response: AxiosResponse): Promise<FileResponse | null> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers["content-disposition"] : undefined;
+            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            return Promise.resolve({ fileName: fileName, status: status, data: response.data as Blob, headers: _headers });
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<FileResponse | null>(<any>null);
+    }
 }
 
 export class Event implements IEvent {
@@ -295,7 +350,7 @@ export class Event implements IEvent {
     description?: string | undefined;
     date?: Date | undefined;
     location?: string | undefined;
-    speakerId?: number | undefined;
+    speakers!: Speaker[];
 
     constructor(data?: IEvent) {
         if (data) {
@@ -303,6 +358,9 @@ export class Event implements IEvent {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
             }
+        }
+        if (!data) {
+            this.speakers = [];
         }
     }
 
@@ -313,7 +371,11 @@ export class Event implements IEvent {
             this.description = _data["description"];
             this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
             this.location = _data["location"];
-            this.speakerId = _data["speakerId"];
+            if (Array.isArray(_data["speakers"])) {
+                this.speakers = [] as any;
+                for (let item of _data["speakers"])
+                    this.speakers!.push(Speaker.fromJS(item));
+            }
         }
     }
 
@@ -331,7 +393,11 @@ export class Event implements IEvent {
         data["description"] = this.description;
         data["date"] = this.date ? this.date.toISOString() : <any>undefined;
         data["location"] = this.location;
-        data["speakerId"] = this.speakerId;
+        if (Array.isArray(this.speakers)) {
+            data["speakers"] = [];
+            for (let item of this.speakers)
+                data["speakers"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -342,7 +408,51 @@ export interface IEvent {
     description?: string | undefined;
     date?: Date | undefined;
     location?: string | undefined;
-    speakerId?: number | undefined;
+    speakers: Speaker[];
+}
+
+export class Speaker implements ISpeaker {
+    id!: number;
+    firstName!: string;
+    lastName!: string;
+
+    constructor(data?: ISpeaker) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+        }
+    }
+
+    static fromJS(data: any): Speaker {
+        data = typeof data === 'object' ? data : {};
+        let result = new Speaker();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        return data; 
+    }
+}
+
+export interface ISpeaker {
+    id: number;
+    firstName: string;
+    lastName: string;
 }
 
 export class ProblemDetails implements IProblemDetails {
@@ -418,7 +528,6 @@ export class UpdateEvent implements IUpdateEvent {
     description?: string | undefined;
     date?: Date | undefined;
     location?: string | undefined;
-    speakerId?: number | undefined;
 
     constructor(data?: IUpdateEvent) {
         if (data) {
@@ -435,7 +544,6 @@ export class UpdateEvent implements IUpdateEvent {
             this.description = _data["description"];
             this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
             this.location = _data["location"];
-            this.speakerId = _data["speakerId"];
         }
     }
 
@@ -452,7 +560,6 @@ export class UpdateEvent implements IUpdateEvent {
         data["description"] = this.description;
         data["date"] = this.date ? this.date.toISOString() : <any>undefined;
         data["location"] = this.location;
-        data["speakerId"] = this.speakerId;
         return data; 
     }
 }
@@ -462,7 +569,6 @@ export interface IUpdateEvent {
     description?: string | undefined;
     date?: Date | undefined;
     location?: string | undefined;
-    speakerId?: number | undefined;
 }
 
 export interface FileResponse {
