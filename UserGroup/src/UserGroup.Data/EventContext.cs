@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace UserGroup.Data
 {
-    public static class DeleteMe
+    public static class EventContext
     {
-        static DeleteMe()
+        static EventContext()
         {
             Events[0].Speakers.Add(Speakers[0]);
             Events[0].Speakers.Add(Speakers[1]);
