@@ -15,7 +15,7 @@ export interface IEventsClient {
     get(id: number): Promise<Event>;
     delete(id: number): Promise<void>;
     put(id: number, updatedEvent: UpdateEvent): Promise<FileResponse | null>;
-    removeSpeaker(id: number, speakerId: number): Promise<FileResponse | null>;
+    removeSpeaker(id: number, speakerId: number): Promise<void>;
 }
 
 export class EventsClient implements IEventsClient {
@@ -289,7 +289,7 @@ export class EventsClient implements IEventsClient {
         return Promise.resolve<FileResponse | null>(<any>null);
     }
 
-    removeSpeaker(id: number, speakerId: number , cancelToken?: CancelToken | undefined): Promise<FileResponse | null> {
+    removeSpeaker(id: number, speakerId: number , cancelToken?: CancelToken | undefined): Promise<void> {
         let url_ = this.baseUrl + "/api/Events/{id}/removeSpeaker";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -300,12 +300,10 @@ export class EventsClient implements IEventsClient {
 
         let options_ = <AxiosRequestConfig>{
             data: content_,
-            responseType: "blob",
             method: "PUT",
             url: url_,
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
             },
             cancelToken
         };
@@ -321,7 +319,7 @@ export class EventsClient implements IEventsClient {
         });
     }
 
-    protected processRemoveSpeaker(response: AxiosResponse): Promise<FileResponse | null> {
+    protected processRemoveSpeaker(response: AxiosResponse): Promise<void> {
         const status = response.status;
         let _headers: any = {};
         if (response.headers && typeof response.headers === "object") {
@@ -331,16 +329,20 @@ export class EventsClient implements IEventsClient {
                 }
             }
         }
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers["content-disposition"] : undefined;
-            const fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-            const fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            return Promise.resolve({ fileName: fileName, status: status, data: response.data as Blob, headers: _headers });
+        if (status === 200) {
+            const _responseText = response.data;
+            return Promise.resolve<void>(<any>null);
+        } else if (status === 404) {
+            const _responseText = response.data;
+            let result404: any = null;
+            let resultData404  = _responseText;
+            result404 = resultData404 !== undefined ? resultData404 : <any>null;
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
         } else if (status !== 200 && status !== 204) {
             const _responseText = response.data;
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
-        return Promise.resolve<FileResponse | null>(<any>null);
+        return Promise.resolve<void>(<any>null);
     }
 }
 

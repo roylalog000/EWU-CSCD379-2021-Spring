@@ -1,5 +1,8 @@
 <section x-data="UserGroup.createOrUpdateEvent()" x-init="loadData()">
     @await Html.PartialAsync("_CreateOrEdit")
+    <div>
+        <span class="text-red-500" x-text="removeError"></span>
+    </div>
     <template x-for="speaker in event.speakers" x-if="event?.speakers != null">
         <div>
             <span x-text="`${speaker.firstName} ${speaker.lastName}`"></span>

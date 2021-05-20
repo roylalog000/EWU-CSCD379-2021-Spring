@@ -95,6 +95,8 @@ namespace UserGroup.Api.Controllers
         }
 
         [HttpPut("{id}/removeSpeaker")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public ActionResult RemoveSpeaker(int id, [FromBody] int speakerId)
         {
             var result = EventManager.RemoveSpeaker(id, speakerId);
@@ -102,10 +104,7 @@ namespace UserGroup.Api.Controllers
             {
                 return Ok();
             }
-            return NotFound(new
-            {
-                Title = result.ErrorMessage
-            });
+            return NotFound(result.ErrorMessage);
         }
     }
 }
