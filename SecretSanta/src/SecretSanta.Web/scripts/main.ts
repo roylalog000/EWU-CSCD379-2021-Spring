@@ -84,6 +84,7 @@ export function createOrUpdateUser() {
             } catch (error) {
                 console.log(error);
             }
+           
         }
     }
 }
@@ -109,7 +110,7 @@ export function setupGroups() {
             } catch (error) {
                 console.log(error);
             }
-        }
+        },
     }
 }
 
@@ -189,6 +190,14 @@ export function createOrUpdateGroup() {
                 console.log(error);
             }
             await this.loadGroup();
+        },async groupAssignment(group : Group){
+            try {
+                const client = new GroupsClient(apiHost);
+                await client.groupAssignment(group.id);
+            } catch(error) {
+                console.log(error);
+            }
+            await this.loadData();
         }
     }
 }

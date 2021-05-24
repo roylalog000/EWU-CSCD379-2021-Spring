@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using SecretSanta.Business;
 
 namespace SecretSanta.Api.Controllers
@@ -69,6 +71,19 @@ namespace SecretSanta.Api.Controllers
                 return Ok();
             }
             return NotFound();
+        }
+        [HttpPut("{id}/groupAssignment")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public ActionResult GroupAssignment(int id){
+            var result = GroupRepository.GroupAssignment(id);
+            if(result.IsSuccess){
+                    return Ok();
+            }
+            return NotFound (new
+            {
+                Title = result.ErrorMessage
+            });
         }
 
         [HttpPut("{id}/remove")]

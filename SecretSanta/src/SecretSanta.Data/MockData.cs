@@ -68,7 +68,54 @@ namespace SecretSanta.Data
                 }
             }
         };
-
+public static List<User> Userst { get; } = new()
+        {
+            {
+                
+                new User
+                {
+                    Id = 1,
+                    FirstName = "Inigo",
+                    LastName = "Montoya"
+                }
+            },
+            {
+                
+                new User
+                {
+                    Id = 2,
+                    FirstName = "Princess",
+                    LastName = "Buttercup"
+                }
+            },
+            {
+                
+                new User
+                {
+                    Id = 3,
+                    FirstName = "Prince",
+                    LastName = "Humperdink"
+                }
+            },
+            {
+                
+                new User
+                {
+                    Id = 4,
+                    FirstName = "Count",
+                    LastName = "Rugen"
+                }
+            },
+            {
+                
+                new User
+                {
+                    Id = 5,
+                    FirstName = "Miracle",
+                    LastName = "Max"
+                }
+            }
+        };
         public static Dictionary<int, Group> Groups { get; } = new()
         {
             {
@@ -81,6 +128,25 @@ namespace SecretSanta.Data
             },
             {
                 2,
+                new Group
+                {
+                    Id = 2,
+                    Name = "Friends"
+                }
+            }
+        };
+        public static List<Group> Groupst { get; } = new()
+        {
+            {
+                
+                new Group
+                {
+                    Id = 1,
+                    Name = "IntelliTect Christmas Party"
+                }
+            },
+            {
+                
                 new Group
                 {
                     Id = 2,

@@ -68,5 +68,6 @@ namespace SecretSanta.Api.Controllers
             }
             return NotFound();
         }
+
     }
 }

@@ -1,3 +1,5 @@
+
+
 <section x-data="SecretSanta.createOrUpdateGroup()" x-init="loadData()">
     <div class="mb-6" x-show="isEditing">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -17,6 +19,12 @@
             </div>
         </div>
     </div>
+    <template x-for="user in group.users" x-if="group?.users != null">
+        <div>
+            <span x-text="`${user.firstName} ${user.lastName}`"></span>
+            <button class="-mt-6" @@click.prevent="groupAssignment(user)"><i class="fas fa-trash text-gray-700 hover:text-red-700"></i></button>
+        </div>
+    </template>
     <template x-for="user in group.users" :key="user" x-if="group?.users != null">
         <div class="w-full sm:w-2/3">
             <section class="border-gray-500 border-2 p-6 m-5 rounded-xl flex flex-row justify-between">
@@ -26,7 +34,7 @@
                     <div class="col-span-2">
                         <i class="fas fa-gift text-gray-700"></i>
                         <i class="fas fa-arrow-right text-gray-700"></i>
-                        <span x-text="getAssignment(user)"></span>
+                        
                     </div>
                 </div>
             </section>
