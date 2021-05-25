@@ -7,10 +7,31 @@ namespace UserGroup.Business
 {
     public class EventManager : IEventManager
     {
+        private Random Random { get; }
+        //private static Random Random { get; } = new();
+        //private ISpeakerService Random {get;}
+        public EventManager(Random random)
+        {
+            Random = random ?? throw new ArgumentNullException(nameof(random));
+        }
+
+        private Speaker GetRandomSpeaker() 
+            => EventContext.Speakers[Random.Next(EventContext.Speakers.Count)];
+
         public Event Create(Event item)
         {
-            item.Id = DeleteMe.Events.Max(s => s.Id) + 1;
-            DeleteMe.Events.Add(item);
+            if (item is null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+            if (!item.Speakers.Any())
+            {
+                Speaker randomSpeaker = GetRandomSpeaker();
+                item.Speakers.Add(randomSpeaker);
+            }
+
+            item.Id = EventContext.Events.Max(s => s.Id) + 1;
+            EventContext.Events.Add(item);
             return item;
         }
 
@@ -20,20 +41,20 @@ namespace UserGroup.Business
             {
                 throw new ArgumentOutOfRangeException(nameof(id));
             }
-            return DeleteMe.Events.FirstOrDefault(x => x.Id == id);
+            return EventContext.Events.FirstOrDefault(x => x.Id == id);
         }
 
         public ICollection<Event> List()
         {
-            return DeleteMe.Events;
+            return EventContext.Events;
         }
 
         public bool Remove(int id)
         {
-            Event? foundEvent = DeleteMe.Events.FirstOrDefault(x => x.Id == id);
+            Event? foundEvent = EventContext.Events.FirstOrDefault(x => x.Id == id);
             if (foundEvent is not null)
             {
-                DeleteMe.Events.Remove(foundEvent);
+                EventContext.Events.Remove(foundEvent);
                 return true;
             }
             return false;
@@ -41,7 +62,7 @@ namespace UserGroup.Business
 
         public RemoveSpeakerResult RemoveSpeaker(int eventId, int speakerId)
         {
-            Event? foundEvent = DeleteMe.Events.FirstOrDefault(x => x.Id == eventId);
+            Event? foundEvent = EventContext.Events.FirstOrDefault(x => x.Id == eventId);
             if (foundEvent is not null)
             {
                 Speaker? foundSpeaker = foundEvent.Speakers.FirstOrDefault(x => x.Id == speakerId);
@@ -60,6 +81,7 @@ namespace UserGroup.Business
             Remove(item.Id);
             Create(item);
         }
+
     }
 
     public class RemoveSpeakerResult

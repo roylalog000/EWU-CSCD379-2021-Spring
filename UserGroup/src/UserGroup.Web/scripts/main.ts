@@ -59,6 +59,8 @@ export function setupEvents() {
 export function createOrUpdateEvent() {
     return {
         event: { } as Event,
+        removeError: "",
+
         async create() {
             try {
                 const client = new EventsClient(apiHost);
@@ -96,8 +98,9 @@ export function createOrUpdateEvent() {
         async removeSpeaker(event : Event, speaker : Speaker){
             try {
                 const client = new EventsClient(apiHost);
-                await client.removeSpeaker(event.id, 42);
+                await client.removeSpeaker(event.id, speaker.id);
             } catch(error) {
+                this.removeError = error;
                 console.log(error);
             }
             await this.loadData();

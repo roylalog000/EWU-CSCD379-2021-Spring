@@ -54,11 +54,11 @@ namespace UserGroup.Web.Api
         System.Threading.Tasks.Task<FileResponse> PutAsync(int id, UpdateEvent updatedEvent, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> RemoveSpeakerAsync(int id, int speakerId);
+        System.Threading.Tasks.Task RemoveSpeakerAsync(int id, int speakerId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> RemoveSpeakerAsync(int id, int speakerId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task RemoveSpeakerAsync(int id, int speakerId, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -481,14 +481,14 @@ namespace UserGroup.Web.Api
         }
     
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> RemoveSpeakerAsync(int id, int speakerId)
+        public System.Threading.Tasks.Task RemoveSpeakerAsync(int id, int speakerId)
         {
             return RemoveSpeakerAsync(id, speakerId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> RemoveSpeakerAsync(int id, int speakerId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task RemoveSpeakerAsync(int id, int speakerId, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -510,7 +510,6 @@ namespace UserGroup.Web.Api
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
     
                     PrepareRequest(client_, request_, urlBuilder_);
     
@@ -533,12 +532,19 @@ namespace UserGroup.Web.Api
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 206)
+                        if (status_ == 200)
                         {
-                            var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_); 
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
-                            return fileResponse_;
+                            return;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<string>("A server side error occurred.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                         else
                         {
