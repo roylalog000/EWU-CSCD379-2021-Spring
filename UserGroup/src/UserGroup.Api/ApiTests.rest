@@ -1,0 +1,34 @@
+@hostname = localhost
+@port = 5101
+@host = https://{{hostname}}:{{port}}
+@contentType = application/json
+
+###
+GET {{host}}/api/events
+
+###
+GET {{host}}/api/events/3
+
+###
+DELETE {{host}}/api/events/0
+
+###
+POST {{host}}/api/events
+Content-Type: {{contentType}}
+
+{
+  "name": "My Birthday",
+  "id" : 43,
+  "speakers": [
+      "Mickey"
+    ]
+}
+
+###
+PUT {{host}}/api/events/1
+Content-Type: {{contentType}}
+
+{
+  "name": "Fun stuff",
+  "id" : 2
+}
