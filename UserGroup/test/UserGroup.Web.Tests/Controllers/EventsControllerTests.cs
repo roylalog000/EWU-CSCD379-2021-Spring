@@ -15,11 +15,12 @@ namespace UserGroup.Web.Tests
         private WebApplicationFactory Factory { get; } = new();
 
         [TestMethod]
+        [Ignore("Ignoring these now since we changed up the UI to use the API diectly instead of through the Contoller.")]
         public async Task Index_WithEvents_InvokesGetAllAsync()
         {
             //Arrange
-            Event event1 = new() { Id = 1, Name = "Event 1" };
-            Event event2 = new() { Id = 2, Name = "Event 2" };
+            Event event1 = new() { Id = 1, Title = "Event 1" };
+            Event event2 = new() { Id = 2, Title = "Event 2" };
             TestableEventsClient eventsClient = Factory.Client;
             eventsClient.GetAllEventsReturnValue = new List<Event>()
             {
@@ -38,6 +39,7 @@ namespace UserGroup.Web.Tests
         }
     
         [TestMethod]
+        [Ignore("Ignoring these now since we changed up the UI to use the API diectly instead of through the Contoller.")]
         public async Task Create_WithValidModel_InvokesPostAsync()
         {
             //Arrange
@@ -57,7 +59,7 @@ namespace UserGroup.Web.Tests
             response.EnsureSuccessStatusCode();
             Assert.AreEqual(1, eventsClient.PostAsyncInvocationCount);
             Assert.AreEqual(1, eventsClient.PostAsyncInvokedParameters.Count);
-            Assert.AreEqual("Birthday", eventsClient.PostAsyncInvokedParameters[0].Name);
+            Assert.AreEqual("Birthday", eventsClient.PostAsyncInvokedParameters[0].Title);
         }
     }
 }

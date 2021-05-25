@@ -13,15 +13,10 @@ namespace UserGroup.Web.Data
 
         public static List<SpeakerViewModel> Speakers = new List<SpeakerViewModel>{
             new SpeakerViewModel {Id = 0, FirstName = "Inigo", LastName = "Montoya", EmailAddress = "Inigo.Montoya@princessbride.com"},
-            new SpeakerViewModel {Id = 1, FirstName = "Princess", LastName = "Buttercup", EmailAddress = "Inigo.Montoya@princessbride.com"},
-            new SpeakerViewModel {Id = 0, FirstName = "Inigo", LastName = "Montoya", EmailAddress = "Inigo.Montoya@princessbride.com"},
-            new SpeakerViewModel {Id = 1, FirstName = "Princess", LastName = "Buttercup", EmailAddress = "Inigo.Montoya@princessbride.com"},
-            new SpeakerViewModel {Id = 0, FirstName = "Inigo", LastName = "Montoya", EmailAddress = "Inigo.Montoya@princessbride.com"},
-            new SpeakerViewModel {Id = 1, FirstName = "Princess", LastName = "Buttercup", EmailAddress = "Inigo.Montoya@princessbride.com"},
-            new SpeakerViewModel {Id = 0, FirstName = "Inigo", LastName = "Montoya", EmailAddress = "Inigo.Montoya@princessbride.com"},
-            new SpeakerViewModel {Id = 1, FirstName = "Princess", LastName = "Buttercup", EmailAddress = "Inigo.Montoya@princessbride.com"},
-            new SpeakerViewModel {Id = 0, FirstName = "Inigo", LastName = "Montoya", EmailAddress = "Inigo.Montoya@princessbride.com"},
-            new SpeakerViewModel {Id = 1, FirstName = "Princess", LastName = "Buttercup", EmailAddress = "Inigo.Montoya@princessbride.com"},
+            new SpeakerViewModel {Id = 1, FirstName = "Princess", LastName = "Buttercup", EmailAddress = "Princess.Buttercup@princessbride.com"},
+            new SpeakerViewModel {Id = 2, FirstName = "Prince", LastName = "Humperdink", EmailAddress = "Prince.Humperdink@princessbride.com"},
+            new SpeakerViewModel {Id = 3, FirstName = "Miracle", LastName = "Max", EmailAddress = "Miracle.Max@princessbride.com"},
+            new SpeakerViewModel {Id = 4, FirstName = "Count", LastName = "Rugen", EmailAddress = "Inigo.Montoya@princessbride.com"},
         };
     }
 }

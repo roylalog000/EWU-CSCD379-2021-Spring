@@ -79,15 +79,32 @@ namespace UserGroup.Api.Controllers
             Event? foundEvent = EventManager.GetItem(id);
             if (foundEvent is not null)
             {
-                if (!string.IsNullOrWhiteSpace(updatedEvent.Name))
+                if (!string.IsNullOrWhiteSpace(updatedEvent.Title))
                 {
-                    foundEvent.Name = updatedEvent.Name;
+                    foundEvent.Title = updatedEvent.Title;
                 }
+                foundEvent.Date = updatedEvent.Date;
+                foundEvent.Description = updatedEvent.Description;
+                foundEvent.Location = updatedEvent.Location;
+                //foundEvent.SpeakerId = updatedEvent.SpeakerId;
 
                 EventManager.Save(foundEvent);
                 return Ok();
             }
             return NotFound();
+        }
+
+        [HttpPut("{id}/removeSpeaker")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public ActionResult RemoveSpeaker(int id, [FromBody] int speakerId)
+        {
+            var result = EventManager.RemoveSpeaker(id, speakerId);
+            if (result.IsSuccess)
+            {
+                return Ok();
+            }
+            return NotFound(result.ErrorMessage);
         }
     }
 }

@@ -101,7 +101,7 @@ namespace UserGroup.Api.Tests.Controllers
             HttpClient client = factory.CreateClient();
             UpdateEvent updateEvent = new()
             {
-                Name = "Casey's Birthday"
+                Title = "Casey's Birthday"
             };
 
             //Act
@@ -109,7 +109,7 @@ namespace UserGroup.Api.Tests.Controllers
 
             //Assert
             response.EnsureSuccessStatusCode();
-            Assert.AreEqual("Casey's Birthday", manager.SavedEvent?.Name);
+            Assert.AreEqual("Casey's Birthday", manager.SavedEvent?.Title);
         }
     }
 }

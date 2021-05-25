@@ -8,6 +8,7 @@ namespace UserGroup.Business
         ICollection<Event> List();
         Event? GetItem(int id);
         bool Remove(int id);
+        RemoveSpeakerResult RemoveSpeaker(int eventId, int speakerId);
         Event Create(Event item);
         void Save(Event item);
     }
