@@ -48,14 +48,34 @@ namespace SecretSanta.Business
         }
     public AssignmentResult GroupAssignment(int groupId)
         {
+            System.Random random = new System.Random();
             Group? group = GetItem(groupId);
             //int num = Random.Next(3);  
             //int num1 = Random.Next(3);  
+            if(group.Users.Count < 3)
+            {
+                return AssignmentResult.Error("Not enough users in group");
+            }
 
-                User? giver = group.Users.FirstOrDefault(x=>x.Id == groupId);
-                User? rec = group.Users.FirstOrDefault(x=>x.Id==groupId);
-                Assignment? newass = new Assignment(giver,rec);
-                group.Assignments.Add(newass);
+            if(group.Assignments.Count != 0)
+            {
+                group.Assignments.Clear();
+            }
+
+            List<User> userList = new List<User>();
+            userList = group.Users;
+
+            for(int i = 0;i < group.Users.Count;i++)
+            {
+                User randUser = userList[random.Next(userList.Count)];
+                while(randUser.Id == group.Users[i].Id)
+                {
+                    randUser = userList[random.Next(userList.Count)];
+                }
+                userList.Remove(randUser);
+                group.Assignments.Add(new Assignment(group.Users[i],randUser));
+            }
+
                 return AssignmentResult.Success();
             
             
@@ -73,10 +93,10 @@ namespace SecretSanta.Business
 
         public bool RemoveUser(int groupId, int userId)
         {
-            Group? foundGroup = DeleteMe.Groups.FirstOrDefault(x => x.Id == groupId);
+            Group? foundGroup = GetItem(groupId);
             if(foundGroup is not null)
             {
-                User? foundUser = foundUser.Users.FirstOrDefault(x => x.Id == userId);
+                User? foundUser = foundGroup.Users.FirstOrDefault(x => x.Id == userId);
                 if(foundUser is not null)
                 {
                     foundGroup.Users.Remove(foundUser);

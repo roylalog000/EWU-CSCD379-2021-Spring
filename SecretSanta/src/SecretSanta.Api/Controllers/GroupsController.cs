@@ -72,7 +72,7 @@ namespace SecretSanta.Api.Controllers
             }
             return NotFound();
         }
-        [HttpPut("{id}/groupAssignment")]
+        [HttpPut("{id}/assign")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public ActionResult GroupAssignment(int id){

@@ -47,6 +47,7 @@
             </template>
         </select>
         <button class="border-1 bg-green-200 border-green-600 hover:bg-green-400 py-2 px-4 rounded-xl mr-3" @@click="addToGroup(group.id)">Add</button>
+        <button class="border-1 bg-green-200 border-green-600 hover:bg-green-400 py-2 px-4 rounded-xl mr-3" @@click="groupAssignment(group.id)">Assign</button>
     </div>
     <a class="inline-block border-2 bg-white border-green-400 hover:border-green-600 py-2 px-4 rounded-xl" asp-controller="Groups" asp-action="Index">Close</a>
 </section>

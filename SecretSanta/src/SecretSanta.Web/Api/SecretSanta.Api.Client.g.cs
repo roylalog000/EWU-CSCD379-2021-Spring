@@ -529,7 +529,7 @@ namespace SecretSanta.Web.Api
                 throw new System.ArgumentNullException("id");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Groups/{id}/groupAssignment");
+            urlBuilder_.Append("api/Groups/{id}/assign");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;

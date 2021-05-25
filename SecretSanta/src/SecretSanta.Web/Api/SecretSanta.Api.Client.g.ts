@@ -306,7 +306,7 @@ export class GroupsClient implements IGroupsClient {
     }
 
     groupAssignment(id: number , cancelToken?: CancelToken | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/Groups/{id}/groupAssignment";
+        let url_ = this.baseUrl + "/api/Groups/{id}/assign";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
