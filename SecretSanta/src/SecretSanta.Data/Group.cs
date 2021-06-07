@@ -8,6 +8,9 @@ namespace SecretSanta.Data
         public string Name { get; set; } = "";
 
         public List<User> Users { get; } = new();
+        //f
         public List<Assignment> Assignments { get; } = new();
+
+        //Gives foreign key to assignemtn creating a many to many
     }
 }
