@@ -8,6 +8,7 @@ namespace SecretSanta.E2E.Tests
     [TestClass]
     public class EndToEndTests
     {
+/*
         private static WebHostServerFixture<Web.Startup, Api.Startup> _Server;
         [ClassInitialize]
         public static void InitializeClass(TestContext testContext)
@@ -61,7 +62,7 @@ namespace SecretSanta.E2E.Tests
             // button = await page.WaitForSelectorAsync("a:has-text('Create Gift')");
             // Assert.IsNotNull(button);
         }
-/*
+
         [TestMethod]
         public async Task CreateGift()
         {
