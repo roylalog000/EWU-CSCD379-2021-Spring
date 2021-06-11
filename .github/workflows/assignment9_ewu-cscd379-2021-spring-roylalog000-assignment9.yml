@@ -40,9 +40,6 @@ jobs:
       
     - name: Build
       run: dotnet build --no-restore --configuration Release
-      
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
 
     - name: dotnet publish api
       working-directory: ./SecretSanta/src/SecretSanta.Api/
