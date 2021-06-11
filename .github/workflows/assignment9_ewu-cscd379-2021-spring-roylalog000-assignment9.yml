@@ -60,5 +60,5 @@ jobs:
         app-name: EWU-CSCD379-2021-Spring-roylalog000-assignment9
         slot-name: Production
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECACD65EC1534A769E136256BE71CB71 }}
-        package: ${{env.DOTNET_ROOT}}/api
+        package: ${{env.DOTNET_ROOT}}/web
 
