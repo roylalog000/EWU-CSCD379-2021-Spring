@@ -1,4 +1,7 @@
-﻿# Assignment 9 & 10
+Azure Deployment: https://ewu-cscd379-2021-spring-roylalog000-assignment9.azurewebsites.net
+
+
+# Assignment 9 & 10
 
 ## Overview
 
