@@ -38,7 +38,16 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       
-    - name: Build
+    - name: api Build
+      working-directory: ./SecretSanta/src/SecretSanta.Api/
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: dotnet publish api
+      working-directory: ./SecretSanta/src/SecretSanta.Api/
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/binSecretSanta
+      
+    - name: web Build
+      working-directory: ./SecretSanta/src/SecretSanta.Web/
       run: dotnet build --no-restore --configuration Release
       
     - name: dotnet publish web
