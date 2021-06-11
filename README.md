@@ -1,4 +1,5 @@
 Azure Deployment: https://ewu-cscd379-2021-spring-roylalog000-assignment9.azurewebsites.net
+
 Video: https://youtu.be/k6Fx9oUAfvw
 
 # Assignment 9 & 10
