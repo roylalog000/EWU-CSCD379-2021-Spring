@@ -45,7 +45,7 @@ namespace SecretSanta.Api
             //services.Configure<SecretSanta.Data.DbContext>(options => Configuration.GetSection("Data").Bind(options));
             services.AddDbContext<SecretSanta.Data.DbContext>(options => 
             {
-            options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+            //options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             options.UseLoggerFactory(LoggerFactory.Create( builder => 
                         builder.AddSerilog(Log.Logger.ForContext<SecretSanta.Data.DbContext>().ForContext("Category", "Database"))
             ));
