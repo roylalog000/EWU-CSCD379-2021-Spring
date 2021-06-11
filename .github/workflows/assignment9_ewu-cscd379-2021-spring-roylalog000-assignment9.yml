@@ -44,7 +44,15 @@ jobs:
       
     - name: dotnet publish api
       working-directory: ./SecretSanta/src/SecretSanta.Api/
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/api
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/apiSecretSanta
+      
+    - name: Run Azure webapp deploy action using publish profile credentials
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: EWU-CSCD379-2021-Spring-roylalog000-assignment9-api
+        slot-name: Production
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1F013E9C6B28445F8E9F4AC33A63BACE }}
+        package: ${{env.DOTNET_ROOT}}/apiSecretSanta
       
     - name: web Build
       working-directory: ./SecretSanta/src/SecretSanta.Web/
@@ -52,7 +60,7 @@ jobs:
       
     - name: dotnet publish web
       working-directory: ./SecretSanta/src/SecretSanta.Web/
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/web
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/webSecretSanta
 
     - name: Run Azure webapp deploy action using publish profile credentials
       uses: azure/webapps-deploy@v2
@@ -60,5 +68,5 @@ jobs:
         app-name: EWU-CSCD379-2021-Spring-roylalog000-assignment9
         slot-name: Production
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECACD65EC1534A769E136256BE71CB71 }}
-        package: ${{env.DOTNET_ROOT}}/web
+        package: ${{env.DOTNET_ROOT}}/webSecretSanta
 
