@@ -5,22 +5,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using DbContext = SecretSanta.Data.DbContext;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
+using Serilog.Extensions.Logging;
+using Serilog.Extensions.Hosting;
+using Serilog.Sinks.SystemConsole.Themes;
+
 
 namespace SecretSanta.Data
 {
-    public class DbContext : Microsoft.EntityFrameworkCore.DbContext
+    public class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDisposable
     {
         public DbContext()
             : base(new DbContextOptionsBuilder<DbContext>().UseSqlite("Data Source=main.db").Options)
+        {  
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
+        }
+public DbContext(DbContextOptions<DbContext> options)
+            : base(options)
         { }
-
+       
         public DbSet<User> Users => Set<User>();
         public DbSet<Group> Groups => Set<Group>();
-
+        public DbSet<Gift> Gift => Set<Gift>();
+        public DbSet<Assignment> Assignments => Set<Assignment>();
         public DbSet<Gift> Gifts => Set<Gift>();
-
-        private StreamWriter LogStream { get; } = new StreamWriter("dblog.txt", append: true);
+        public DbSet<GroupUser> GroupUsers => Set<GroupUser>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,37 +50,48 @@ namespace SecretSanta.Data
                 throw new ArgumentNullException(nameof(optionsBuilder));
             }
 
-            optionsBuilder.LogTo(LogStream.WriteLine);
+            
         }
 
-        public override void Dispose()
-        {
-            base.Dispose();
-            LogStream.Dispose();
-            GC.SuppressFinalize(this);
-        }
+        
 
-        public override async ValueTask DisposeAsync()
-        {
-            await base.DisposeAsync();
-            await LogStream.DisposeAsync();
-        }
 
+        
+
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (modelBuilder is null)
             {
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
+         
+            
+            
+
+           
+
+            
+
+            
                 
             modelBuilder.Entity<User>()
-                .HasAlternateKey(User => new { User.FirstName, User.LastName });
-            modelBuilder.Entity<Group>()
-                .HasAlternateKey(Group => new { Group.Name});
-            modelBuilder.Entity<Assignment>()
-                .HasAlternateKey(Assignment => new { Assignment.GiverReciever});
+                .HasAlternateKey(user => new { user.FirstName, user.LastName});
             modelBuilder.Entity<Gift>()
-                .HasAlternateKey(Gift => new { Gift.Title });
+                .HasAlternateKey(gift => new {gift.Title, gift.UserId});
+            modelBuilder.Entity<Group>()
+                .HasAlternateKey(group => new {group.Name});
+            modelBuilder.Entity<Assignment>()
+                .HasAlternateKey(assignment => new {assignment.GiverId, assignment.ReceiverId});
+            modelBuilder.Entity<GroupUser>()
+                .HasAlternateKey(group => new {group.GroupId, group.UserId});
+                
+               // modelBuilder.Entity<GroupUsers>()
+
+
+
+            
+            //modelBuilder.Entity<User>().HasData(DbData.Users());
         }
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SecretSanta.Data.Tests
@@ -25,14 +24,14 @@ namespace SecretSanta.Data.Tests
 
             try
             {
-                await RemoveExistingTestGroupsAsync();
                 int countBefore = dbContext.Groups.Count();
+                await RemoveExistingTestGroupsAsync();
 
                 @group = new Group() {Name = $"{titlePrefix} " + Guid.NewGuid().ToString()};
-                int id = @group.Id;
+                int id = @group.GroupId;
                 dbContext.Groups.Add(@group);
                 await dbContext.SaveChangesAsync();
-                Assert.AreNotEqual<int>(0, @group.Id);
+                Assert.AreNotEqual<int>(0, @group.GroupId);
                 Assert.AreEqual(countBefore + 1, dbContext.Groups.Count());
             }
             finally
