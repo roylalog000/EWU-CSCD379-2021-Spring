@@ -5,8 +5,9 @@ name: Azure App Service - EWU-CSCD379-2021-Spring-roylalog000-assignment9(Produc
 
 on:
   push:
-    branches:
-      - Assignment9
+    branches: [ Assignment* ]
+  pull_request:
+    branches: [ Assignment* ]
 
 jobs:
   build:
