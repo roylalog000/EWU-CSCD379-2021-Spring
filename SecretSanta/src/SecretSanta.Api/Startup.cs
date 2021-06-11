@@ -42,7 +42,7 @@ namespace SecretSanta.Api
             services.AddLogging(builder => {
                 builder.AddSerilog(logger: Log.Logger);
             });
-            //services.Configure<SecretSanta.Data.DbContext>(options => Configuration.GetSection("Data").Bind(options));
+            services.Configure<SecretSanta.Data.DbContext>(options => Configuration.GetSection("Data").Bind(options));
             services.AddDbContext<SecretSanta.Data.DbContext>(options => 
             {
             //options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
