@@ -1,4 +1,11 @@
-﻿# Assignment 9 & 10
+This is our code before we tried to do the azure deployment. This code is much more functional than the deployment version we created. We didn't want to outright delete our deployment since it did have some functionality, but we thought we would get more credit showing the code working in localhost. Sorry for the inconvenience.
+
+To deploy, run "dotnet run DeploySampleData" in the API. 
+The web project needs the npm install and npm run build:dev, then just the dotnet run.
+
+Video: https://youtu.be/k6Fx9oUAfvw
+
+# Assignment 9 & 10
 
 ## Overview
 
