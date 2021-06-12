@@ -8,7 +8,7 @@ using SecretSanta.Business;
 
 namespace SecretSanta.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("/[controller]")]
     [ApiController]
     public class GroupsController : ControllerBase
     {
