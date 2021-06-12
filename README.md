@@ -8,7 +8,7 @@ Azure Deployment: https://ewu-cscd379-2021-spring-roylalog000-assignment9.azurew
 Also liknk to past pull:
 https://github.com/IntelliTect-Samples/EWU-CSCD379-2021-Spring/pull/207
 
-To deploy/start, run "dotnet run DeploySampleData" in the API. 
+To deploy/start, run "dotnet run --DeploySampleData" in the API. 
 The web project needs the npm install and npm run build:dev, then just the dotnet run.
 
 Time spent in total is 30 - 35 hours working on this assignment since last week.(roughly 3 to 4 a day for the last 10 to 12 days). Also this lack week has was finals as well. Please consider this when looking over our code for our grade.
