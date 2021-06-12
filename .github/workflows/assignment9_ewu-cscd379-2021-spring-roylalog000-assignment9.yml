@@ -2,45 +2,62 @@ name: Azure App Service - EWU-CSCD379-2021-Spring-roylalog000-assignment9(Produc
 
 on:
   push:
-    branches: [ Assignment9 ]
+    branches: [ Assignment* ]
+  pull_request:
+    branches: [ Assignment* ]
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    
+  build:
     defaults:
       run:
-        working-directory: ./SecretSanta/src/SecretSanta.Web
+        working-directory: ./SecretSanta/
+    runs-on: ubuntu-latest
 
     steps:
     # checkout the repo
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
 
-    - name: Set up .NET Core
+
+    - uses: actions/checkout@v2
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '5.0.x'
-        
-    - name: npm install
-      run: npm install
+        dotnet-version: 5.0.x
+    - name: Get Directory
+      run: pwd
+
+    - name: Run Npm Build
+      working-directory: ./SecretSanta/src/SecretSanta.Web/
+      run: |
+        npm install
+        npm run build:prod
+    - name: Restore dependencies
+      run: dotnet restore
       
-    - name: npm build
-      run: npm run build:prod
-
-    - name: (WEB) Build with dotnet
-      run: dotnet build --configuration Release
-
-    - name: (WEB) dotnet publish
-      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/binSecretSanta
-
-    - name: (API) Build with dotnet
-      working-directory: ./SecretSanta/src/SecretSanta.Api
-      run: dotnet build --configuration Release
-
-    - name: (API) dotnet publish
-      working-directory: ./SecretSanta/src/SecretSanta.Api
+    - name: api Build
+      working-directory: ./SecretSanta/src/SecretSanta.Api/
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: dotnet publish api
+      working-directory: ./SecretSanta/src/SecretSanta.Api/
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/apiSecretSanta
+      
+    - name: Run Azure webapp deploy action using publish profile credentials
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: EWU-CSCD379-2021-Spring-roylalog000-assignment9-api
+        slot-name: Production
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1F013E9C6B28445F8E9F4AC33A63BACE }}
+        package: ${{env.DOTNET_ROOT}}/apiSecretSanta
+      
+    - name: web Build
+      working-directory: ./SecretSanta/src/SecretSanta.Web/
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: dotnet publish web
+      working-directory: ./SecretSanta/src/SecretSanta.Web/
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/webSecretSanta
 
     - name: Run Azure webapp deploy action using publish profile credentials
       uses: azure/webapps-deploy@v2
