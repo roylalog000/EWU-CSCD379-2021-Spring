@@ -2,18 +2,31 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 using SecretSanta.Business;
-
+using SecretSanta.Data;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using System;
+using Serilog;
+using Microsoft.Extensions.Logging;
 namespace SecretSanta.Api
 {
     public class Startup
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        private IConfigurationRoot Configuration;
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = (IConfigurationRoot)configuration ?? throw new ArgumentNullException($"{nameof(configuration)} was null");
+            System.Console.WriteLine();
+        }
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IGiftRepository, GiftRepository>();
             services.AddControllers();
             services.AddSwaggerDocument();
 
@@ -25,6 +38,18 @@ namespace SecretSanta.Api
                            .AllowAnyMethod()
                            .AllowAnyHeader();
                 });
+            });
+            services.AddLogging(builder => {
+                builder.AddSerilog(logger: Log.Logger);
+            });
+            //services.Configure<SecretSanta.Data.DbContext>(options => Configuration.GetSection("Data").Bind(options));
+            services.AddDbContext<SecretSanta.Data.DbContext>(options => 
+            {
+            options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+            options.UseLoggerFactory(LoggerFactory.Create( builder => 
+                        builder.AddSerilog(Log.Logger.ForContext<SecretSanta.Data.DbContext>().ForContext("Category", "Database"))
+            ));
+            
             });
         }
 

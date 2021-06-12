@@ -1,16 +1,27 @@
-﻿using System;
+using System.Collections.Generic;
+using System;
 
 namespace SecretSanta.Data
 {
     public class Assignment
     {
-        public User Giver { get; }
-        public User Receiver { get; }
+        public int AssignmentId {get; set;}
+        public int GroupId {get; set;}
 
-        public Assignment(User giver, User recipient)
+        public User Giver { get; set; }
+        public int GiverId { get; set; }
+        public User Receiver { get; set; }
+        public int ReceiverId { get; set; }
+
+        public Group Group {get; set;}
+        
+
+        public Assignment() {  }
+
+        public Assignment(User giver, User receiver)
         {
             Giver = giver ?? throw new ArgumentNullException(nameof(giver));
-            Receiver = recipient ?? throw new ArgumentNullException(nameof(recipient));
+            Receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
         }
     }
 }
