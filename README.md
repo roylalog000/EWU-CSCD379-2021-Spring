@@ -1,51 +1,61 @@
-Please feel free to submit updates.
+﻿# Assignment 9 & 10
 
-## Instructors ##
-[Mark Michaelis](https://github.com/MarkMichaelis), [Kevin Bost](https://github.com/Keboo), and [Michael Stokesbary](https://github.com/breaman)
+## Overview
 
-For any general question we suggest asking in Teams so that others can help as well. We encourage people to work together and collaborate. Please feel free to help your fellow students out. Though it is possible to privately message people directly, as much as possible, we encourage open discussion on the main chat so that others can benefit as well.
+In this assignment we are going to build "complete" the SecretSanta project. As discussed in class on Thursday, you have two weeks to complete the assignment which is worth "double the points". The final assignment is due by __midnight on Friday, June 11__.
 
-You can also send an e-mail to: EWU-Instructors@IntelliTect.com
+__Updated June 8, 2021:__ 
+ - Place items in priority order
+ - Allowed video in place of end to end testing
+ - Moved end to end testing to extra credit
+ - Extended assignment to Friday (as announced on Teams)
 
-## Online Meeting
-We will be utilizing Microsoft Teams for this class. The link to the meeting will be in the course syllabus on Canvas. You can find additional information for accessing Teams [here](Docs/MicrosoftTeams.md)
+## Assignment
 
-## GitHub Information
-In order to properly grade assignments, we need to be able to link your GitHub ID with your name in Canvas. Within Teams there is a Files tab, that contains a GitHubUserNames.xlsx spreadsheet. Please add you GitHub ID and name to this spread sheet so we can properly assign grades. 
+1. Configure all data to be stored in an SqLite Database using the Entity Framework. ✔❌
+    - Hint: Add a Gift object to the SecretSanta.Data project
+    - Hint: Update `Group` and `Assignment` to persist as a many-to-many relationship
+    - All tables must have a primary key ✔❌
+    - All tables mush have an unique/alternate key (other than the primary key) ✔❌
 
-## Book
-Though there is no required course book for this class. Much of the C# related topics that we will use are covered in this this book:
+2. Provide UI functionality for a complete Secret Santa functionality. ✔❌
+  This includes:
+    - The ability for a user to add a list of gifts ✔❌
+    - Displaying who a user's secret santa is for in each group. ✔❌
+    - Viewing all gifts requested by your secret santa ✔❌
 
-Essential C# 8.0 (7th Edition)  
-ISBN-13: 9780135972267
+3. Ensure website is deployed by your GitHub Action and proivde URL to the deployed site in your pull request. ✔❌
 
-Code for the Book: https://github.com/IntelliTect/EssentialCSharp
+4. Provide a walk through video (or do the extra credit) showing:
+    - Creates a Group ✔❌
+    - Creates a 3 users ✔❌
+    - Assigns a minimum of two gifts to each user ✔❌
+    - Assigns the secret santas ✔❌
+    - Allows a user to see their secret santa and the associated gifts wanted. ✔❌
 
-## General Information:
-* [Submit Student Information](https://docs.google.com/forms/d/e/1FAIpQLScCTQgRTQDBa4aiaDXj9HPferL7WuL8LoKx8sDaBHwM-a_F8Q/viewform) Google form so we can properly grade assignments and add you to Microsoft Teams.
-* [**Homework/Grading**](Docs/Homework.md)
-* **Office Hours**: Office hours are available before class on Tuesday's and Thursdays starting at 1 PM.  To ensure that an instructor will be available, please schedule an appointment 24-hours beforehand by sending a meeting request email to EWU-Instructors@IntelliTect.com.  Alternative times may be available upon request.
+5. Remove the MockData class and replace it with sample data that gets deployed into the database following a migration when the command "DeploySampleData" is specified on the command line. ✔❌
+    - Hint: See https://docs.microsoft.com/en-us/ef/core/modeling/data-seeding and/or search on "Entity Framework Core Seed Data"
 
-## Computer Setup ##
+6. Add some minimal rudimentary logging using `Microsoft.Extensions.Logging`. 
+    - At a minimum, the logging should be in startup.cs. ✔❌
+    - Configure the Entity Framework to log to a file (located in the SecretSanta.Data assembly directory) with the category name "Database". ✔❌
+    - The name of the log file should default to `db.log`. ✔❌
+    - The name of the log file should be configurable using `Microsoft.Extensions.Coniguration`.
+    - Hint: Use the Serilog framework with `Microsoft.Extensions.Logging` to log to a file.) ✔❌
 
-### Required ###
-- [.NET 5.0](https://dotnet.microsoft.com/download)
+7. Allow for the connection string (db path) for the SqLite database to be provided using `Microsoft.Extensions.Coniguration`:
+    - Default to main.db in the same directory as the SecretSanta.Data assembly. ✔❌
+    - Allow for an environment variable to override the default connection string ✔❌
+    - Allow a connection string passed on the command line to take precidence over the environment variable. ✔❌
 
-Though most of the course work will be cross platform, we will be working on Windows inside of Visual Studio. For the UI portion of the class Visual Studio on Windows will be required. 
+9. GitHub Action CI/CD Build ✔❌
+    - Ensure all tests (unit test, end to end tests, etc.) are running in your GitHub Action build and include a URL to the build in your executing GitHub action in your pull request.
 
-### Recommended ###
-- [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/). Version 16.8 or later. The community edition is fine, though we believe most students should have access to higher SKUs with EWU's MSDN (this assumption may be wrong). Lab computers should have Professional already installed.
-- [Visual Studio Code](https://code.visualstudio.com/) This lightweight editor has several plugins that can make web development much easier. Many of us also use it as our catch-all lightweight text/code editor.
-- [Git Kraken](https://www.gitkraken.com/) Though you can do all of the git interaction from within Visual Studio/Visual Studio Code, or on the command line, GitKraken is free for open source work. It also provides a nice graphical version of the commit history so you can see how various commits and branches relate.
-- [GitHub Student Developer Pack](https://education.github.com/students) Lots of great development tools and resources. The JetBrains products ReSharper (a plugin for Visual Studio), and Rider (a full C# IDE) are great tools for helping you write better code. 
+## Extra Credit
 
-### Optional ###
-- [Visual Studio Live Share](https://visualstudio.microsoft.com/services/live-share/) This lets you easily collaborate with other people on a share set of code. 
-- [GitExtensions](https://gitextensions.github.io/), [GitHub Desktop](https://desktop.github.com/), (or any other git tool): There are lots of options out there for working with git. If there is a tool you like, use it! 
-
-## Class Video ##
-We will try to record class presentations so that students can review after class. If successful, the recordings will be available here: [RECORDINGS](https://www.dropbox.com/sh/96gbcsqfqb9nghx/AAA6KMSJBceSoO_R8d8fJTnda?dl=0).
-
-Please note:
-* **Do not expect or rely on video recordings.**  We are not making any commitment to having video recordings of class. 
-* Please keep all videos ***confidential***. These videos are for people enrolled in this class.  No videos or parts of videos should be distributed or shared with those outside of the class.
+- Provide end to end testing showing: ✔❌
+  - Creates a Group
+  - Creates a 3 users
+  - Assigns a minimum of two gifts to each user
+  - Assigns the secret santas
+  - Allows a user to see their secret santa and the associated gifts wanted.
