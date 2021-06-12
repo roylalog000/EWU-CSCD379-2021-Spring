@@ -2,7 +2,11 @@ This is our code before we tried to do the azure deployment. This code is much m
 
 Hers the the azure from the previous pull:
 
+
 Azure Deployment: https://ewu-cscd379-2021-spring-roylalog000-assignment9.azurewebsites.net
+
+Also liknk to past pull:
+https://github.com/IntelliTect-Samples/EWU-CSCD379-2021-Spring/pull/207
 
 To deploy/start, run "dotnet run DeploySampleData" in the API. 
 The web project needs the npm install and npm run build:dev, then just the dotnet run.
