@@ -7,7 +7,7 @@ using SecretSanta.Business;
 
 namespace SecretSanta.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
