@@ -1,3 +1,5 @@
+This code is somewhat functional, but the azure deployment really messed with everything. We created another pull request with no deployment here:https://github.com/IntelliTect-Samples/EWU-CSCD379-2021-Spring/pull/214
+
 Azure Deployment: https://ewu-cscd379-2021-spring-roylalog000-assignment9.azurewebsites.net
 
 Video: https://youtu.be/k6Fx9oUAfvw
