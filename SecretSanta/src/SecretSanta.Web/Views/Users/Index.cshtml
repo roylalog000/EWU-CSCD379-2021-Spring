@@ -1,11 +1,12 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
+
 <section class="flex flex-wrap mb-6" x-data="SecretSanta.setupUsers()" x-init="mounted()">
-    
+
     <script>
         var webHost = "@Configuration["WebHost"].TrimEnd('/')";
     </script>
-    
+
     <template x-for="(currentUser, index) in users" :key="index">
         <section class="w-full sm:w-1/3">
             <a :href="`${webHost}/users/edit/${currentUser.id}`">
